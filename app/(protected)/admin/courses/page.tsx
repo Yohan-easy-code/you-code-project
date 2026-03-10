@@ -14,39 +14,54 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function AdminCoursesPage() {
-  const session = await requireAdmin();
+  await requireAdmin();
 
+  // Admin => voit TOUS les cours
   const courses = await prisma.course.findMany({
-    where: { creatorId: session.user.id },
-    orderBy: { createdAt: "asc" },
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      title: true,
+      imageUrl: true,
+      createdAt: true,
+      creator: {
+        select: { id: true, name: true, email: true },
+      },
+    },
   });
 
   return (
-    <div className=" flex justify-center w-full h-fit mx-4 px-4 m-auto">
-      <Card className="w-full">
-        <CardHeader>
+    <div className="mx-auto w-full max-w-5xl px-4 py-8">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Mes cours</CardTitle>
+          <p className="text-sm text-muted-foreground">
+            {courses.length} cours
+          </p>
         </CardHeader>
 
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-20">Image</TableHead>
+                <TableHead className="w-24">Image</TableHead>
                 <TableHead>Titre</TableHead>
+                <TableHead className="hidden md:table-cell">Créateur</TableHead>
+                <TableHead className="hidden md:table-cell">Créé le</TableHead>
               </TableRow>
             </TableHeader>
 
             <TableBody>
               {courses.map((c) => (
-                <TableRow key={c.id}>
+                <TableRow key={c.id} className="hover:bg-muted/50">
                   <TableCell>
-                    <div className="relative h-10 w-16 overflow-hidden rounded-md border">
+                    <div className="relative h-10 w-16 overflow-hidden rounded-md border bg-muted">
                       <Image
                         src={c.imageUrl ?? "/placeholder-course.png"}
                         alt={c.title}
                         fill
                         className="object-cover"
+                        sizes="64px"
                       />
                     </div>
                   </TableCell>
@@ -59,8 +74,24 @@ export default async function AdminCoursesPage() {
                       {c.title}
                     </Link>
                   </TableCell>
+
+                  <TableCell className="hidden md:table-cell text-muted-foreground">
+                    {c.creator?.name ?? c.creator?.email ?? "—"}
+                  </TableCell>
+
+                  <TableCell className="hidden md:table-cell text-muted-foreground">
+                    {new Date(c.createdAt).toLocaleDateString("fr-FR")}
+                  </TableCell>
                 </TableRow>
               ))}
+
+              {courses.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={4} className="py-10 text-center">
+                    Aucun cours pour le moment.
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </CardContent>

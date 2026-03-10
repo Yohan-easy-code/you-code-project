@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "picsum.photos",
+      },
+      // si tu utilises aussi GitHub avatars :
+      {
+        protocol: "https",
         hostname: "avatars.githubusercontent.com",
       },
     ],

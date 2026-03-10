@@ -4,12 +4,24 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // pas de url ici avec Prisma 7 config mode
+  // Prisma 7 config mode: pas de url ici
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+enum LessonState {
+  HIDDEN
+  PUBLISHED
+  PUBLIC
+}
+
+enum Progress {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
 }
 
 model User {
@@ -24,23 +36,84 @@ model User {
 
   accounts      Account[]
   sessions      Session[]
-  courses       Course[] 
+
+  // cours créés par l’utilisateur
+  createdCourses Course[] @relation("CreatedCourses")
+
+  // inscriptions à des cours (élève)
+  courseEnrollments CourseOnUser[]
+
+  // progression sur les leçons
+  lessonProgress LessonOnUser[]
 }
 
 model Course {
   id           String   @id @default(cuid())
   title        String
+  presentation String?  @db.Text
   imageUrl     String?
-  presentation String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  creatorId   String
-  creator   User     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId    String
+  creator      User     @relation("CreatedCourses", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  lessons      Lesson[]
+  users        CourseOnUser[]
 
   @@index([creatorId])
   @@index([createdAt])
 }
+
+model Lesson {
+  id        String      @id @default(cuid())
+  title     String
+  rank      String      // ordre (ex: "aaaaaa", "aaaaab" ou "001", "002")
+  content   String      @db.Text
+  state     LessonState @default(HIDDEN)
+
+  createdAt DateTime @default(now())
+
+  courseId  String
+  course    Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  users     LessonOnUser[]
+
+  @@index([courseId])
+}
+
+model CourseOnUser {
+  id         String    @id @default(cuid())
+  userId     String
+  courseId   String
+  createdAt  DateTime  @default(now())
+  canceledAt DateTime?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+  @@index([userId])
+}
+
+model LessonOnUser {
+  id        String   @id @default(cuid())
+  userId    String
+  lessonId  String
+  progress  Progress @default(NOT_STARTED)
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([lessonId])
+  @@index([userId])
+}
+
+/* ===== Auth tables (NextAuth/Auth.js) ===== */
+
 model Account {
   id                String  @id @default(cuid())
   userId            String

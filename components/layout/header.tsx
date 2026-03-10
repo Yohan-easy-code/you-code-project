@@ -20,6 +20,9 @@ export function Header() {
             priority
           />
         </Link>
+        <Link href={"/explorer"}>Explorer</Link>
+        <Link href={"/courses"}>Courses</Link>
+
         {/* AUTH */}
         <div className="flex items-center gap-4">
           <AuthSection />
