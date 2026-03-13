@@ -47,6 +47,11 @@ model User {
   lessonProgress LessonOnUser[]
 }
 
+enum CourseState {
+  DRAFT
+  PUBLISHED
+}
+
 model Course {
   id           String   @id @default(cuid())
   title        String
@@ -54,6 +59,7 @@ model Course {
   imageUrl     String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  state        CourseState @default(DRAFT)
 
   creatorId    String
   creator      User     @relation("CreatedCourses", fields: [creatorId], references: [id], onDelete: Cascade)

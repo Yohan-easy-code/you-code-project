@@ -23,7 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getCourse } from "@/lib/queries/course.query";
+import { getCourse } from "@/lib/queries/admin-course";
 import { Button } from "@/components/ui/button";
 
 export default async function CoursePage({

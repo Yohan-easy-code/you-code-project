@@ -34,11 +34,6 @@ export default async function CourseLessonsPage({
       <h1 className="text-2xl font-semibold">Lessons 📚 {course?.title}</h1>
       <Separator />
       <Card>
-        <CardHeader>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Card Description</CardDescription>
-          <CardAction>Card Action</CardAction>
-        </CardHeader>
         <CardContent className="flex flex-col gap-2">
           {course.lessons.map((lesson) => (
             <LessonItem key={lesson.id} lesson={lesson} />

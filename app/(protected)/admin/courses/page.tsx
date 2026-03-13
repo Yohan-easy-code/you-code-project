@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export default async function AdminCoursesPage() {
   await requireAdmin();
@@ -24,6 +25,7 @@ export default async function AdminCoursesPage() {
       title: true,
       imageUrl: true,
       createdAt: true,
+      state: true,
       creator: {
         select: { id: true, name: true, email: true },
       },
@@ -46,7 +48,7 @@ export default async function AdminCoursesPage() {
               <TableRow>
                 <TableHead className="w-24">Image</TableHead>
                 <TableHead>Titre</TableHead>
-                <TableHead className="hidden md:table-cell">Créateur</TableHead>
+                <TableHead className=" md:table-cell">State</TableHead>
                 <TableHead className="hidden md:table-cell">Créé le</TableHead>
               </TableRow>
             </TableHeader>
@@ -75,8 +77,8 @@ export default async function AdminCoursesPage() {
                     </Link>
                   </TableCell>
 
-                  <TableCell className="hidden md:table-cell text-muted-foreground">
-                    {c.creator?.name ?? c.creator?.email ?? "—"}
+                  <TableCell className=" md:table-cell text-muted-foreground">
+                    <Badge> {c.state}</Badge>
                   </TableCell>
 
                   <TableCell className="hidden md:table-cell text-muted-foreground">

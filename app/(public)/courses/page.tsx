@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator";
-import { getUserCourses } from "@/lib/queries/course.query";
+import { getUserCourses } from "@/lib/queries/admin-course";
 import { CourseCard } from "@/components/courses/CourseCard";
 import { CoursePaginationButton } from "@/features/pagination/PaginationButton";
 import { auth } from "@/auth";

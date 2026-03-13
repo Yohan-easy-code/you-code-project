@@ -1,4 +1,4 @@
-import { CoursesCard } from "@/lib/queries/course.query";
+import { CoursesCard } from "@/lib/queries/admin-course";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
