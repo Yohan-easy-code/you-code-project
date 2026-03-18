@@ -13,6 +13,9 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { TypographyH1 } from "@/components/layout/layout";
+import { Button } from "@/components/ui/button";
 
 export default async function AdminCoursesPage() {
   await requireAdmin();
@@ -33,10 +36,16 @@ export default async function AdminCoursesPage() {
   });
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8">
+    <div className="mx-auto w-full max-w-5xl px-4 py-8 flex flex-col gap-3">
+      <div className="flex justify-between">
+        <TypographyH1>Courses</TypographyH1>
+        <Button variant={"secondary"}>
+          <Link href={"/admin/courses/new"}>New Course</Link>
+        </Button>
+      </div>
+      <Separator />
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Mes cours</CardTitle>
           <p className="text-sm text-muted-foreground">
             {courses.length} cours
           </p>

@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/table";
 import { getCourse } from "@/lib/queries/admin-course";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export default async function CoursePage({
   params,
@@ -88,7 +89,11 @@ export default async function CoursePage({
                         {u.email}
                       </Link>
                     </TableCell>
-                    <TableCell>{u.canceled ? "CANCELED" : "ACTIVE"}</TableCell>
+                    <TableCell>
+                      <Badge variant={"default"}>
+                        {u.canceled ? "CANCELED" : "ACTIVE"}
+                      </Badge>
+                    </TableCell>
                     <TableCell className="text-right">
                       <Button variant="secondary" size="lg">
                         <Menu strokeWidth={2} size={12} />
@@ -123,9 +128,11 @@ export default async function CoursePage({
             <p>{course._count.users} Users</p>
             <p>{course._count.lessons} Lessons</p>
             <div className="flex flex-col gap-2 mt-4">
-              <Button variant={"outline"} className="w-full ">
-                Edit
-              </Button>
+              <Link href={`/admin/courses/${course.id}/edit`}>
+                <Button variant={"outline"} className="w-full ">
+                  Edit
+                </Button>
+              </Link>
               <Button variant={"outline"} className="w-full ">
                 <Link href={`/admin/courses/${course.id}/lessons`}>
                   Edit Lessons
