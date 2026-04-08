@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { requireAdmin } from "@/lib/auth/guards";
+import { requireUser } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
 
 import {
@@ -11,17 +11,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TypographyH1 } from "@/components/layout/layout";
 import { Button } from "@/components/ui/button";
 
 export default async function AdminCoursesPage() {
-  await requireAdmin();
+  await requireUser();
 
-  // Admin => voit TOUS les cours
+  const session = await requireUser();
+
   const courses = await prisma.course.findMany({
+    where: {
+      creatorId: session.user.id,
+    },
     orderBy: { createdAt: "desc" },
     select: {
       id: true,

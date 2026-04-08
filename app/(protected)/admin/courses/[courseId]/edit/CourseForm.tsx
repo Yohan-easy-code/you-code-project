@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -14,14 +15,7 @@ import {
 } from "@/components/ui/select";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
@@ -38,40 +32,64 @@ import {
 } from "@/components/ui/input-group";
 
 import { courseFormSchema, type CourseFormValues } from "./course.schema";
-import { updateCourseAction } from "./course.action";
+import { createCourseAction, updateCourseAction } from "./course.action";
+
 type CourseFormProps = {
-  initialValues: CourseFormValues;
-  courseId: string;
+  initialValues?: CourseFormValues;
+  courseId?: string;
 };
+
+const emptyValues: CourseFormValues = {
+  title: "",
+  imageUrl: "",
+  presentation: "",
+  state: "DRAFT",
+};
+
 export function CourseForm({ initialValues, courseId }: CourseFormProps) {
+  const router = useRouter();
+
   const form = useForm<CourseFormValues>({
     resolver: zodResolver(courseFormSchema),
-    defaultValues: initialValues,
+    defaultValues: initialValues ?? emptyValues,
   });
+
   React.useEffect(() => {
-    form.reset(initialValues);
+    form.reset(initialValues ?? emptyValues);
   }, [initialValues, form]);
 
   async function onSubmit(data: CourseFormValues) {
     try {
-      const result = await updateCourseAction({
-        courseId,
-        ...data,
-      });
+      const result = courseId
+        ? await updateCourseAction({
+            courseId,
+            ...data,
+          })
+        : await createCourseAction(data);
 
-      toast.success("Course updated successfully");
-    } catch (error) {
-      toast.error("Failed to update course");
+      const message =
+        result?.data?.message ??
+        (courseId
+          ? "Course updated successfully"
+          : "Course created successfully");
+
+      const nextCourseId = result?.data?.course?.id ?? courseId;
+
+      toast.success(message);
+
+      if (nextCourseId) {
+        router.push(`/admin/courses/${nextCourseId}`);
+        router.refresh();
+      }
+    } catch {
+      toast.error(
+        courseId ? "Failed to update course" : "Failed to create course",
+      );
     }
   }
 
   return (
     <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Edit course</CardTitle>
-        <CardDescription>Update the course information.</CardDescription>
-      </CardHeader>
-
       <CardContent>
         <form id="course-form" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
@@ -88,6 +106,9 @@ export function CourseForm({ initialValues, courseId }: CourseFormProps) {
                     placeholder="https://..."
                     autoComplete="off"
                   />
+                  <FieldDescription>
+                    Host and use an image. You can use Imgur to host your image.
+                  </FieldDescription>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -145,6 +166,7 @@ export function CourseForm({ initialValues, courseId }: CourseFormProps) {
                 </Field>
               )}
             />
+
             <Controller
               name="state"
               control={form.control}
@@ -178,11 +200,23 @@ export function CourseForm({ initialValues, courseId }: CourseFormProps) {
 
       <CardFooter>
         <Field orientation="horizontal">
-          <Button type="button" variant="outline" onClick={() => form.reset()}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => form.reset(initialValues ?? emptyValues)}
+          >
             Reset
           </Button>
-          <Button type="submit" form="course-form">
-            Submit
+          <Button
+            type="submit"
+            form="course-form"
+            disabled={form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting
+              ? courseId
+                ? "Updating..."
+                : "Creating..."
+              : "Submit"}
           </Button>
         </Field>
       </CardFooter>

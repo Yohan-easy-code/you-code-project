@@ -4,6 +4,7 @@ import { CourseCard } from "@/components/courses/CourseCard";
 import { CoursePaginationButton } from "@/features/pagination/PaginationButton";
 import { auth } from "@/auth";
 import { notFound } from "next/navigation";
+import { TypographyH1 } from "@/components/layout/layout";
 
 export default async function CoursesPage({
   searchParams,
@@ -26,9 +27,7 @@ export default async function CoursesPage({
 
   return (
     <div className="mx-auto mt-4 flex w-full max-w-3xl flex-col gap-4 px-4">
-      <h1 className="flex w-full min-w-50 flex-col items-start gap-1">
-        Explorer
-      </h1>
+      <TypographyH1>Courses</TypographyH1>
       <Separator />
       <div className="grid w-full gap-4">
         {courses.map((course) => (

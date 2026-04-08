@@ -1,28 +1,26 @@
 import { Separator } from "@/components/ui/separator";
 import { getCourseLessons } from "@/lib/queries/lesson.query";
 
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { requireAdmin } from "@/lib/auth/guards";
-import { notFound } from "next/navigation";
-import { LessonItem } from "./LessonItem";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { requireUser } from "@/lib/auth/guards";
+import { notFound, redirect } from "next/navigation";
+import { SubmitButton } from "@/components/form/SubmitButton";
+import { prisma } from "@/lib/db/prisma";
+import { LessonState } from "@prisma/client";
+import SortableLessonsList from "./SortableLessonsList";
+import { getTheMiddleRank } from "@/lib/getTheMiddleRank";
 
 export default async function CourseLessonsPage({
   params,
 }: {
-  params: { courseId: string };
+  params: Promise<{ courseId: string }>;
 }) {
-  const session = await requireAdmin(); // ou requireAuth()
+  const { courseId } = await params;
+
+  const session = await requireUser();
+
   const course = await getCourseLessons({
-    courseId: params.courseId,
+    courseId,
     userId: session.user.id,
     role: session.user.role,
   });
@@ -30,19 +28,71 @@ export default async function CourseLessonsPage({
   if (!course) notFound();
 
   return (
-    <div className=" w-full p-6 space-y-4 ">
-      <h1 className="text-2xl font-semibold">Lessons 📚 {course?.title}</h1>
+    <div className="w-full space-y-4 p-6">
+      <h1 className="text-2xl font-semibold">Lessons 📚 {course.title}</h1>
       <Separator />
+
       <Card>
         <CardContent className="flex flex-col gap-2">
-          {course.lessons.map((lesson) => (
-            <LessonItem key={lesson.id} lesson={lesson} />
-          ))}
+          <SortableLessonsList lessons={course.lessons} />
         </CardContent>
+
         <CardFooter>
-          <Button variant={"outline"} className="w-full ">
-            Create Lesson
-          </Button>
+          <form>
+            <SubmitButton
+              variant="outline"
+              className="w-full"
+              formAction={async () => {
+                "use server";
+
+                const session = await requireUser();
+
+                const existingCourse = await prisma.course.findFirstOrThrow({
+                  where: {
+                    id: courseId,
+                    ...(session.user.role === "ADMIN"
+                      ? {}
+                      : {
+                          creatorId: session.user.id,
+                        }),
+                  },
+                  select: {
+                    id: true,
+                    lessons: {
+                      orderBy: {
+                        rank: "desc",
+                      },
+                      take: 1,
+                      select: {
+                        rank: true,
+                      },
+                    },
+                  },
+                });
+
+                const lesson = await prisma.lesson.create({
+                  data: {
+                    title: "draft lesson",
+                    rank: getTheMiddleRank(
+                      existingCourse.lessons[0]?.rank,
+                      undefined,
+                    ),
+                    content: "## Default content",
+                    state: LessonState.HIDDEN,
+                    course: {
+                      connect: {
+                        id: existingCourse.id,
+                      },
+                    },
+                  },
+                });
+
+                redirect(`/admin/courses/${courseId}/lessons/${lesson.id}`);
+              }}
+            >
+              Create Lesson
+            </SubmitButton>
+          </form>
         </CardFooter>
       </Card>
     </div>

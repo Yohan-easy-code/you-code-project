@@ -2,6 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import { getExplorerCourses } from "@/lib/queries/admin-course";
 import { CourseCard } from "@/components/courses/CourseCard";
 import { CoursePaginationButton } from "@/features/pagination/PaginationButton";
+import { TypographyH1 } from "@/components/layout/layout";
 
 export default async function ExplorerPage({
   searchParams,
@@ -16,9 +17,7 @@ export default async function ExplorerPage({
 
   return (
     <div className="mx-auto mt-4 flex w-full max-w-3xl flex-col gap-4 px-4">
-      <h1 className="flex w-full min-w-50 flex-col items-start gap-1">
-        Explorer
-      </h1>
+      <TypographyH1>Explorer</TypographyH1>
       <Separator />
       <div className="grid w-full gap-4">
         {courses.map((course) => (

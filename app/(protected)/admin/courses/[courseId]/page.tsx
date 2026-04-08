@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { requireAdmin } from "@/lib/auth/guards";
+import { requireAdmin, requireUser } from "@/lib/auth/guards";
 import { CoursePaginationButton } from "@/features/pagination/PaginationButton";
 import { Menu } from "lucide-react";
 
@@ -34,7 +34,7 @@ export default async function CoursePage({
   params: Promise<{ courseId: string }>;
   searchParams: Promise<{ page?: string }>;
 }) {
-  const session = await requireAdmin();
+  const session = await requireUser();
 
   const p = await params;
   const sp = await searchParams;

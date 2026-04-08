@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { requireAdmin } from "@/lib/auth/guards";
+import { requireAdmin, requireUser } from "@/lib/auth/guards";
 import { Button } from "@/components/ui/button";
 
 export default async function AdminPage() {
-  await requireAdmin();
+  await requireUser();
 
   return (
     <div className="space-y-4">

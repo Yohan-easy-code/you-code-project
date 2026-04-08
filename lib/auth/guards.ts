@@ -7,3 +7,10 @@ export async function requireAdmin() {
   if (session.user.role !== "ADMIN") notFound();
   return session;
 }
+export async function requireUser() {
+  const session = await auth();
+
+  if (!session?.user) notFound();
+
+  return session;
+}

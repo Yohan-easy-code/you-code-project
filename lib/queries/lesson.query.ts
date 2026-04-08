@@ -18,7 +18,11 @@ export const getCourseLessons = async ({
     select: {
       id: true,
       title: true,
-      lessons: true,
+      lessons: {
+        orderBy: {
+          rank: "asc",
+        },
+      },
     },
   });
 };

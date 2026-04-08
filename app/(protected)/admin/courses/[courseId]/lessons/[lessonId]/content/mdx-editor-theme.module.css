@@ -1,0 +1,40 @@
+.theme.theme {
+  --accentBase: var(--primary);
+  --accentBgSubtle: var(--muted);
+  --accentBg: var(--accent);
+  --accentBgHover: color-mix(in oklch, var(--primary) 15%, var(--accent));
+  --accentBgActive: color-mix(in oklch, var(--primary) 25%, var(--accent));
+  --accentLine: var(--border);
+  --accentBorder: var(--border);
+  --accentBorderHover: var(--ring);
+  --accentSolid: var(--primary);
+  --accentSolidHover: color-mix(
+    in oklch,
+    var(--primary) 85%,
+    var(--background)
+  );
+  --accentText: var(--foreground);
+  --accentTextContrast: var(--primary-foreground);
+
+  --basePageBg: var(--background);
+  --baseBase: var(--background);
+  --baseBgSubtle: var(--muted);
+  --baseBg: var(--card);
+  --baseBgHover: var(--accent);
+  --baseBgActive: var(--muted);
+  --baseLine: var(--border);
+  --baseBorder: var(--border);
+  --baseBorderHover: var(--ring);
+  --baseSolid: var(--muted-foreground);
+  --baseSolidHover: var(--foreground);
+  --baseText: var(--muted-foreground);
+  --baseTextContrast: var(--foreground);
+
+  color: var(--baseText);
+  background: var(--baseBg);
+}
+
+.toolbar.toolbar {
+  background-color: var(--muted);
+  border: 1px solid var(--border);
+}
