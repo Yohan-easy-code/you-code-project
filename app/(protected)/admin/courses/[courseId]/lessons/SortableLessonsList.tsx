@@ -17,7 +17,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Lesson } from "@prisma/client";
-import { LessonItemSortable } from "./AdminLessonItem";
+import { LessonItem, LessonItemSortable } from "./AdminLessonItem";
 import { saveLessonMove } from "./lessons.action";
 
 type SortableLessonsListProps = {
@@ -30,6 +30,12 @@ export default function SortableLessonsList({
   const [items, setItems] = useState(lessons);
   const [isDragging, setIsDragging] = useState(false);
   const [wasDragging, setWasDragging] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
+  const sortableListId = `course-lessons-${lessons[0]?.courseId ?? "empty"}`;
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   useEffect(() => {
     setItems(lessons);
@@ -87,8 +93,19 @@ export default function SortableLessonsList({
     }
   }
 
+  if (!hasMounted) {
+    return (
+      <div className="flex flex-col gap-2">
+        {items.map((lesson) => (
+          <LessonItem key={lesson.id} lesson={lesson} />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <DndContext
+      id={sortableListId}
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragStart={() => {
@@ -104,6 +121,7 @@ export default function SortableLessonsList({
       }}
     >
       <SortableContext
+        id={`${sortableListId}-sortable`}
         items={items.map((item) => item.id)}
         strategy={verticalListSortingStrategy}
       >

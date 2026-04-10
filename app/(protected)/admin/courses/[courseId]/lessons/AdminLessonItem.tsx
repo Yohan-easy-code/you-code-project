@@ -56,6 +56,7 @@ export function LessonItemSortable({
     transform,
     transition,
     isDragging: isSorting,
+    setActivatorNodeRef,
   } = useSortable({ id: lesson.id });
 
   const style = {
@@ -70,6 +71,7 @@ export function LessonItemSortable({
       className={`flex items-stretch ${isSorting ? "z-10 opacity-80" : ""}`}
     >
       <button
+        ref={setActivatorNodeRef}
         type="button"
         className="touch-none flex items-center rounded-l border border-r-0 border-border bg-card px-3 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
         aria-label={`Reorder ${lesson.title}`}

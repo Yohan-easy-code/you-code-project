@@ -5,6 +5,15 @@ import { CoursePaginationButton } from "@/features/pagination/PaginationButton";
 import { Menu } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import {
   Card,
@@ -26,6 +35,7 @@ import {
 import { getCourse } from "@/lib/queries/admin-course";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { toggleUserAccess } from "./course-user.action";
 
 export default async function CoursePage({
   params,
@@ -35,6 +45,7 @@ export default async function CoursePage({
   searchParams: Promise<{ page?: string }>;
 }) {
   const session = await requireUser();
+  const { courseId } = await params;
 
   const p = await params;
   const sp = await searchParams;
@@ -95,9 +106,30 @@ export default async function CoursePage({
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button variant="secondary" size="lg">
-                        <Menu strokeWidth={2} size={12} />
-                      </Button>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="secondary" size="lg">
+                            <Menu strokeWidth={2} size={12} />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem asChild>
+                            <form
+                              action={async () => {
+                                "use server";
+                                await toggleUserAccess({
+                                  courseId,
+                                  userId: u.id,
+                                });
+                              }}
+                            >
+                              <button type="submit">
+                                {u.canceled ? "Activate" : "Cancel"}
+                              </button>
+                            </form>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 ))}
