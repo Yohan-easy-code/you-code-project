@@ -1,10 +1,9 @@
 import { Separator } from "@/components/ui/separator";
-import { getUserCourses } from "@/lib/queries/admin-course";
 import { CourseCard } from "@/components/courses/CourseCard";
 import { CoursePaginationButton } from "@/features/pagination/PaginationButton";
 import { auth } from "@/auth";
-import { notFound } from "next/navigation";
 import { TypographyH1 } from "@/components/layout/layout";
+import { getCourses } from "./course.query";
 
 export default async function CoursesPage({
   searchParams,
@@ -12,17 +11,13 @@ export default async function CoursesPage({
   searchParams: Promise<{ page?: string }>;
 }) {
   const session = await auth();
-
-  if (!session?.user.id) {
-    return notFound();
-  }
   const sp = await searchParams;
 
   const page = Math.max(1, Number(sp.page ?? 1));
 
-  const { courses, totalPage } = await getUserCourses({
-    userId: session.user.id,
-    page,
+  const { courses, totalCourses } = await getCourses({
+    userId: session?.user?.id,
+    page: page - 1,
   });
 
   return (
@@ -36,7 +31,7 @@ export default async function CoursesPage({
       </div>
 
       <CoursePaginationButton
-        totalPage={totalPage}
+        totalPage={totalCourses}
         page={page}
         baseUrl="/courses"
       />

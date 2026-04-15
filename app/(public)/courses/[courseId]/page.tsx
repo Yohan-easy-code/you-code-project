@@ -23,7 +23,7 @@ export default async function CoursePage({
     <div className="mx-auto w-full max-w-6xl space-y-4 px-4 py-6">
       <h1 className="text-2xl">Course</h1>
       <Separator />
-      <Course course={course} />
+      <Course course={course} userId={session?.user.id} />
     </div>
   );
 }

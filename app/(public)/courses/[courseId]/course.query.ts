@@ -17,6 +17,15 @@ export const getPublicCourse = async ({
       imageUrl: true,
       title: true,
       presentation: true,
+      users: {
+        where: {
+          userId,
+        },
+        select: {
+          id: true,
+          canceledAt: true,
+        },
+      },
       lessons: {
         where: {
           state: {
@@ -71,6 +80,8 @@ export const getPublicCourse = async ({
 
   return {
     ...course,
+    isEnrolled: course.users.length > 0 && !course.users[0].canceledAt,
+    isCanceled: course.users.length > 0 && !!course.users[0].canceledAt,
     lessons,
   };
 };

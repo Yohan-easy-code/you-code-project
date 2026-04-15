@@ -3,12 +3,19 @@ import { CourseType } from "./course.query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LessonItem, NoLessonItem } from "./LessonItem";
+import { SubmitButton } from "@/components/form/SubmitButton";
+import { requireUser } from "@/lib/auth/guards";
+import { prisma } from "@/lib/db/prisma";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export type CourseProps = {
   course: CourseType;
+  userId?: string;
 };
 
-export function Course({ course }: CourseProps) {
+export function Course({ course, userId }: CourseProps) {
+  const isLogin = Boolean(userId);
   return (
     <div className="grid w-full gap-4 lg:grid-cols-[70%_30%] lg:items-start">
       <Card className="w-full">
@@ -53,6 +60,59 @@ export function Course({ course }: CourseProps) {
           )}
         </CardContent>
       </Card>
+      {!course.isCanceled && !course.isEnrolled && isLogin ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Actions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form>
+              <SubmitButton
+                formAction={async () => {
+                  "use server";
+
+                  const session = await requireUser();
+
+                  const courseOnUser = await prisma.courseOnUser.create({
+                    data: {
+                      userId: session.user.id,
+                      courseId: course.id,
+                    },
+                    select: {
+                      course: {
+                        select: {
+                          id: true,
+                          lessons: {
+                            orderBy: {
+                              rank: "asc",
+                            },
+                            take: 1,
+                            select: {
+                              id: true,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  });
+
+                  const lesson = courseOnUser.course.lessons[0];
+
+                  revalidatePath(`/courses/${course.id}`);
+
+                  if (!lesson) {
+                    return;
+                  }
+                  console.log("lesson redirect", lesson);
+                  redirect(`/courses/${course.id}/lessons/${lesson.id}`);
+                }}
+              >
+                Join
+              </SubmitButton>
+            </form>
+          </CardContent>
+        </Card>
+      ) : null}
     </div>
   );
 }
