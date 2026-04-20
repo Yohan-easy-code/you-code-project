@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,7 +19,7 @@ export default async function AccountPage() {
       .split(" ")
       .filter(Boolean)
       .slice(0, 2)
-      .map((p) => p[0]?.toUpperCase())
+      .map((part: string) => part[0]?.toUpperCase())
       .join("") || "U";
 
   return (

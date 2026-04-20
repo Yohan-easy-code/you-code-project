@@ -8,16 +8,23 @@ import { requireUser } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export type CourseProps = {
   course: CourseType;
   userId?: string;
+  isModal?: boolean;
 };
 
-export function Course({ course, userId }: CourseProps) {
+export function Course({ course, userId, isModal }: CourseProps) {
   const isLogin = Boolean(userId);
   return (
-    <div className="grid w-full gap-4 lg:grid-cols-[70%_30%] lg:items-start">
+    <div
+      className={cn(
+        "grid w-full gap-4",
+        isModal ? "grid-cols-1" : "lg:grid-cols-[70%_30%] lg:items-start",
+      )}
+    >
       <Card className="w-full">
         <CardHeader className="flex flex-row gap-3 space-y-0">
           <Avatar className="h-14 w-14 rounded">
