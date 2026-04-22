@@ -5,6 +5,7 @@ import { getLesson } from "./lesson.query";
 import { requireUser } from "@/lib/auth/guards";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
+import { OpenLessonNavigationButton } from "./OpenLessonNavigationButton";
 
 export const Lesson = async ({
   lessonId,
@@ -38,11 +39,12 @@ export const Lesson = async ({
     throw new Error("Unauthorized");
   }
   return (
-    <Card className="h-fit w-full">
-      <CardHeader>
+    <Card className="h-fit w-full max-w-none">
+      <CardHeader className="flex flex-row items-center gap-4">
+        <OpenLessonNavigationButton />
         <CardTitle>{lesson.title}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="min-w-0">
         <MdxProse markdown={lesson.content} />
       </CardContent>
     </Card>

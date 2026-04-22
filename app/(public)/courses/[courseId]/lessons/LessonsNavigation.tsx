@@ -1,17 +1,10 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/guards";
-import { PanelLeftClose } from "lucide-react";
 import { getPublicCourse } from "../course.query";
-import { LessonItem } from "../LessonItem";
+import LessonNavigationCard from "./LessonNavigationCard";
 
 export type LessonsNavigationProps = {
   courseId: string;
+  className?: string;
 };
 
 export const LessonsNavigation = async (props: LessonsNavigationProps) => {
@@ -26,16 +19,6 @@ export const LessonsNavigation = async (props: LessonsNavigationProps) => {
   }
 
   return (
-    <Card className="lg:max-w-xs flex-1 h-fit">
-      <CardHeader className="flex justify-between">
-        <CardTitle>{course.title}</CardTitle>
-        <PanelLeftClose />
-      </CardHeader>
-      <CardContent className="flex flex-col gap-2">
-        {course.lessons.map((lesson) => (
-          <LessonItem lesson={lesson} key={lesson.id} />
-        ))}
-      </CardContent>
-    </Card>
+    <LessonNavigationCard course={course} className={props.className} />
   );
 };

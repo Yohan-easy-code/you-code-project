@@ -3,11 +3,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const LessonSkeleton = () => {
   return (
-    <Card className="flex-1">
+    <Card className="w-full">
       <CardHeader>
         <Skeleton className="h-5 w-40" />
       </CardHeader>
-      <CardContent className="m-auto flex max-w-3xl flex-col gap-2">
+      <CardContent className="flex min-w-0 flex-col gap-2">
         <Skeleton className="h-8 w-52" />
         <Skeleton className="h-5 w-full" />
         <Skeleton className="h-5 w-1/2" />

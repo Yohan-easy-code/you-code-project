@@ -61,17 +61,17 @@ export default async function LessonPage({
   }
 
   return (
-    <div className="w-full flex flex-col items-stretch gap-4 p-4 lg:flex-row lg:w-full">
-      <div>
+    <div className="flex w-full flex-col items-stretch gap-6 lg:flex-row lg:items-start">
+      <div className="min-w-0 shrink-0">
         <Suspense fallback={<LessonsNavigationSkeleton />}>
-          <LessonsNavigation courseId={courseId} />
+          <LessonsNavigation courseId={courseId} className="w-full" />
         </Suspense>
       </div>
-      <div className="flex flex-col gap-3 items-end">
+      <div className="flex min-w-0 flex-1 flex-col gap-4">
         <Suspense fallback={<LessonSkeleton />}>
           <Lesson lessonId={lessonId} courseId={courseId} />
         </Suspense>
-        <form>
+        <form className="flex justify-end">
           <SubmitButton
             formAction={async () => {
               "use server";

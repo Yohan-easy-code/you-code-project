@@ -23,9 +23,9 @@ export const getLessonIcon = (status: CourseLessonItem["progress"]) => {
 export const LessonItem = ({ lesson }: LessonItemProps) => {
   return (
     <Link href={`/courses/${lesson.courseId}/lessons/${lesson.id}`}>
-      <div className="flex items-center gap-3 rounded border border-border bg-card px-4 py-2 transition-colors hover:bg-accent">
+      <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3 transition-colors hover:border-accent-foreground/15 hover:bg-accent/50">
         {getLessonIcon(lesson.progress)}
-        <h3 className="flex-1">{lesson.title}</h3>
+        <h3 className="flex-1 text-sm font-medium leading-5">{lesson.title}</h3>
         {lesson.state === "PUBLIC" ? <Globe size={16} /> : null}
       </div>
     </Link>
