@@ -1,4 +1,18 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# YouCode
+
+## 📸 Preview
+
+![App Screenshot](./public/appScreenShot1.png)
+![App Screenshot](./public/appScreenShot2.png)
+![App Screenshot](./public/appScreenShot3.png)
+![App Screenshot](./public/appScreenShot4.png)
+![App Screenshot](./public/appScreenShot5.png)
+![App Screenshot](./public/appScreenShot6.png)
+![App Screenshot](./public/appScreenShot7.png)
+
+## Disclaimer
+
+J'aurais pu faire ce projet presque entièrement avec l'aide d'une IA comme GPT, Codex ou Claude Code. Le but était surtout d'apprendre, donc je n'ai pas mis en place de logique de délégation avec des fichiers comme `AGENTS.md`, et je ne me suis pas appuyé sur l'IA pour produire tout le projet de bout en bout. En revanche, l'ensemble des textes du projet a bien été rédigé ou retravaillé avec l'aide de l'IA.
 
 ## Getting Started
 
