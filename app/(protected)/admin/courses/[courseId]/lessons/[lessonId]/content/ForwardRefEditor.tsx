@@ -3,7 +3,13 @@
 import { useDebounceFn } from "@/app/hooks/useDebounceFn";
 import { Badge } from "@/components/ui/badge";
 import dynamic from "next/dynamic";
-import { forwardRef, useCallback, useState, type ComponentProps } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useRef,
+  useState,
+  type ComponentProps,
+} from "react";
 import { type MDXEditorMethods, type MDXEditorProps } from "@mdxeditor/editor";
 import { lessonActionEditContent } from "../lesson.action";
 
@@ -55,6 +61,7 @@ export const ForwardRefEditor = forwardRef<
     { lessonId, autoSaveDelayMs = 1000, onChange, ...props },
     ref,
   ) => {
+    const localEditorRef = useRef<MDXEditorMethods>(null);
     const [syncState, setSyncState] = useState<SyncState>("sync");
 
     const saveMarkdown = useCallback(
@@ -106,7 +113,7 @@ export const ForwardRefEditor = forwardRef<
           {...props}
           lessonId={lessonId}
           onChange={handleChange}
-          editorRef={ref}
+          editorRef={ref ?? localEditorRef}
         />
       </div>
     );

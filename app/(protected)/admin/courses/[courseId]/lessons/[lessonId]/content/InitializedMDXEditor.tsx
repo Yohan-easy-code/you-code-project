@@ -15,6 +15,7 @@ import {
   toolbarPlugin,
   UndoRedo,
   BoldItalicUnderlineToggles,
+  BlockTypeSelect,
   ConditionalContents,
   ChangeCodeMirrorLanguage,
   ShowSandpackInfo,
@@ -65,6 +66,7 @@ export default function InitializedMDXEditor({
                   fallback: () => (
                     <>
                       <UndoRedo />
+                      <BlockTypeSelect />
                       <BoldItalicUnderlineToggles />
                       <InsertVideoButton
                         onInsert={() => {
