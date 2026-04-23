@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import { requireUser } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
+import { SafeImage } from "@/components/ui/safe-image";
 
 import {
   Table,
@@ -71,8 +71,9 @@ export default async function AdminCoursesPage() {
                 <TableRow key={c.id} className="hover:bg-muted/50">
                   <TableCell>
                     <div className="relative h-10 w-16 overflow-hidden rounded-md border bg-muted">
-                      <Image
-                        src={c.imageUrl ?? "/placeholder-course.png"}
+                      <SafeImage
+                        src={c.imageUrl}
+                        fallbackSrc="/placeholder-course.svg"
                         alt={c.title}
                         fill
                         className="object-cover"

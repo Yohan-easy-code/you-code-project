@@ -23,12 +23,17 @@ import {
 import "@mdxeditor/editor/style.css";
 import { cn } from "@/lib/utils";
 import styles from "./mdx-editor-theme.module.css";
+import { InsertVideoButton, videoJsxPlugin } from "./video-jsx";
 
 export default function InitializedMDXEditor({
   editorRef,
   className,
+  lessonId,
   ...props
-}: { editorRef: ForwardedRef<MDXEditorMethods> | null } & MDXEditorProps) {
+}: {
+  editorRef: ForwardedRef<MDXEditorMethods> | null;
+  lessonId: string;
+} & MDXEditorProps) {
   return (
     <MDXEditor
       className={cn(styles.theme, className)}
@@ -37,6 +42,7 @@ export default function InitializedMDXEditor({
         listsPlugin(),
         quotePlugin(),
         thematicBreakPlugin(),
+        videoJsxPlugin(lessonId),
         codeBlockPlugin({ defaultCodeBlockLanguage: "js" }),
         codeMirrorPlugin({
           codeBlockLanguages: { js: "JavaScript", css: "CSS" },
@@ -60,6 +66,17 @@ export default function InitializedMDXEditor({
                     <>
                       <UndoRedo />
                       <BoldItalicUnderlineToggles />
+                      <InsertVideoButton
+                        onInsert={() => {
+                          if (!editorRef || typeof editorRef === "function") {
+                            return;
+                          }
+
+                          editorRef.current?.insertMarkdown(
+                            `\n<Video title="" src="" poster="" />\n`,
+                          );
+                        }}
+                      />
                       <InsertCodeBlock />
                     </>
                   ),

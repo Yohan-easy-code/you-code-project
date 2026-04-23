@@ -65,8 +65,12 @@ export const getCourse = async ({
 
 export const getExplorerCourses = async (page: number) => {
   const currentPage = Math.max(1, page);
+  const where = {
+    state: "PUBLISHED",
+  } satisfies Prisma.CourseWhereInput;
 
   const courses = await prisma.course.findMany({
+    where,
     orderBy: { createdAt: "desc" },
     take: PAGE_SIZE,
     skip: (currentPage - 1) * PAGE_SIZE,
@@ -86,7 +90,7 @@ export const getExplorerCourses = async (page: number) => {
     },
   });
 
-  const totalCourses = await prisma.course.count();
+  const totalCourses = await prisma.course.count({ where });
 
   return {
     courses,

@@ -9,6 +9,8 @@ import { prisma } from "@/lib/db/prisma";
 import { LessonState } from "@prisma/client";
 import SortableLessonsList from "./SortableLessonsList";
 import { getTheMiddleRank } from "@/lib/getTheMiddleRank";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function CourseLessonsPage({
   params,
@@ -29,7 +31,12 @@ export default async function CourseLessonsPage({
 
   return (
     <div className="w-full space-y-4 p-6">
-      <h1 className="text-2xl font-semibold">Lessons 📚 {course.title}</h1>
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <h1 className="text-2xl font-semibold">Lessons 📚 {course.title}</h1>
+        <Button asChild variant="outline" className="w-full lg:w-auto">
+          <Link href={`/admin/courses/${courseId}`}>Retour au cours</Link>
+        </Button>
+      </div>
       <Separator />
 
       <Card>

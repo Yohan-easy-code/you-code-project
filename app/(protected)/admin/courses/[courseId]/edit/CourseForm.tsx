@@ -39,9 +39,11 @@ type CourseFormProps = {
   courseId?: string;
 };
 
+const placeholderImageUrl = "/placeholder-course.svg";
+
 const emptyValues: CourseFormValues = {
   title: "",
-  imageUrl: "",
+  imageUrl: placeholderImageUrl,
   presentation: "",
   state: "DRAFT",
 };
@@ -99,15 +101,30 @@ export function CourseForm({ initialValues, courseId }: CourseFormProps) {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="course-image">Image URL</FieldLabel>
-                  <Input
-                    {...field}
-                    id="course-image"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="https://..."
-                    autoComplete="off"
-                  />
+                  <div className="space-y-3">
+                    <Input
+                      {...field}
+                      id="course-image"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="https://..."
+                      autoComplete="off"
+                    />
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        type="button"
+                        variant={
+                          field.value === placeholderImageUrl
+                            ? "default"
+                            : "outline"
+                        }
+                        onClick={() => field.onChange(placeholderImageUrl)}
+                      >
+                        Use placeholder image
+                      </Button>
+                    </div>
+                  </div>
                   <FieldDescription>
-                    Host and use an image. You can use Imgur to host your image.
+                    Use an external image URL or select the default placeholder.
                   </FieldDescription>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

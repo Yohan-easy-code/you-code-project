@@ -8,10 +8,13 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "picsum.photos",
       },
-      // si tu utilises aussi GitHub avatars :
       {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
       },
     ],
   },

@@ -13,6 +13,7 @@ export const getCourses = async ({
   const whereQuery = (
     userId
       ? {
+          state: "PUBLISHED",
           users: {
             some: {
               userId,

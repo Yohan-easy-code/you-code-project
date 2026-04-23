@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
-import Image from "next/image";
 import { SignOut } from "@/components/auth/signout-button";
+import { SafeImage } from "@/components/ui/safe-image";
 
 export async function UserMenu() {
   const session = await auth();
@@ -10,8 +10,9 @@ export async function UserMenu() {
   return (
     <div className="flex items-center gap-3">
       {session.user.image ? (
-        <Image
+        <SafeImage
           src={session.user.image}
+          fallbackSrc="/placeholder-course.svg"
           alt="avatar"
           width={32}
           height={32}

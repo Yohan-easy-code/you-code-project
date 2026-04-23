@@ -102,7 +102,12 @@ export const ForwardRefEditor = forwardRef<
         <Badge variant={getBadgeVariant(syncState)}>
           {getBadgeLabel(syncState)}
         </Badge>
-        <Editor {...props} onChange={handleChange} editorRef={ref} />
+        <Editor
+          {...props}
+          lessonId={lessonId}
+          onChange={handleChange}
+          editorRef={ref}
+        />
       </div>
     );
   },
