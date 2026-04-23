@@ -519,6 +519,35 @@ export default function Page() {
 
         <Separator />
       </section>
+
+      <section className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 pb-16 lg:px-6">
+        <motion.div {...revealProps}>
+          <Card className="border-border/70 bg-card shadow-sm">
+            <CardContent className="flex flex-col gap-6 p-8 lg:flex-row lg:items-center lg:justify-between">
+              <div className="max-w-2xl space-y-3">
+                <Badge variant="outline">Projet</Badge>
+                <h2 className="text-3xl font-semibold tracking-tight">
+                  Voir le détail du stack et des compétences travaillées
+                </h2>
+                <p className="text-muted-foreground">
+                  Une page dédiée regroupe les technologies utilisées pendant le
+                  projet et les compétences développées au fil de la
+                  construction de l&apos;application.
+                </p>
+              </div>
+
+              <motion.div {...hoverActionProps}>
+                <Button asChild size="lg">
+                  <Link href="/projet">
+                    Découvrir le projet
+                    <ArrowRight className="size-4" />
+                  </Link>
+                </Button>
+              </motion.div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </section>
     </main>
   );
 }
