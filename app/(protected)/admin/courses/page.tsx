@@ -69,34 +69,49 @@ export default async function AdminCoursesPage() {
             <TableBody>
               {courses.map((c) => (
                 <TableRow key={c.id} className="hover:bg-muted/50">
-                  <TableCell>
-                    <div className="relative h-10 w-16 overflow-hidden rounded-md border bg-muted">
-                      <SafeImage
-                        src={c.imageUrl}
-                        fallbackSrc="/placeholder-course.svg"
-                        alt={c.title}
-                        fill
-                        className="object-cover"
-                        sizes="64px"
-                      />
-                    </div>
-                  </TableCell>
-
-                  <TableCell className="font-medium">
+                  <TableCell className="p-0">
                     <Link
                       href={`/admin/courses/${c.id}`}
-                      className="hover:underline"
+                      className="block px-4 py-3"
+                    >
+                      <div className="relative h-10 w-16 overflow-hidden rounded-md border bg-muted">
+                        <SafeImage
+                          src={c.imageUrl}
+                          fallbackSrc="/placeholder-course.svg"
+                          alt={c.title}
+                          fill
+                          className="object-cover"
+                          sizes="64px"
+                        />
+                      </div>
+                    </Link>
+                  </TableCell>
+
+                  <TableCell className="p-0 font-medium">
+                    <Link
+                      href={`/admin/courses/${c.id}`}
+                      className="block px-4 py-3 hover:underline"
                     >
                       {c.title}
                     </Link>
                   </TableCell>
 
-                  <TableCell className=" md:table-cell text-muted-foreground">
-                    <Badge> {c.state}</Badge>
+                  <TableCell className="p-0 md:table-cell text-muted-foreground">
+                    <Link
+                      href={`/admin/courses/${c.id}`}
+                      className="block px-4 py-3"
+                    >
+                      <Badge>{c.state}</Badge>
+                    </Link>
                   </TableCell>
 
-                  <TableCell className="hidden md:table-cell text-muted-foreground">
-                    {new Date(c.createdAt).toLocaleDateString("fr-FR")}
+                  <TableCell className="hidden p-0 md:table-cell text-muted-foreground">
+                    <Link
+                      href={`/admin/courses/${c.id}`}
+                      className="block px-4 py-3"
+                    >
+                      {new Date(c.createdAt).toLocaleDateString("fr-FR")}
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}

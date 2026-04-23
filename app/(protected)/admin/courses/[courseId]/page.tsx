@@ -90,12 +90,7 @@ export default async function CoursePage({
                       </Avatar>
                     </TableCell>
                     <TableCell>
-                      <Link
-                        className="hover:underline transition"
-                        href={`/admin/users/${u.id}`}
-                      >
-                        {u.email}
-                      </Link>
+                      <span>{u.email}</span>
                     </TableCell>
                     <TableCell>
                       <Badge variant={"default"}>
