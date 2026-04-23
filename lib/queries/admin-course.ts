@@ -26,6 +26,7 @@ export const getCourse = async ({
       imageUrl: true,
       title: true,
       presentation: true,
+      state: true,
       users: {
         take: PAGE_SIZE,
         skip: (page - 1) * PAGE_SIZE,

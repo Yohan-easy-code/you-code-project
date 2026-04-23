@@ -8,7 +8,7 @@ export const NewUserStatsSkeleton = () => {
         <CardTitle>Users course activity</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex h-[300px] w-full items-end gap-3">
+        <div className="flex h-75 w-full items-end gap-3">
           {Array.from({ length: 12 }).map((_, index) => (
             <Skeleton
               key={index}

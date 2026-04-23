@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { requireAdmin, requireUser } from "@/lib/auth/guards";
+import { requireUser } from "@/lib/auth/guards";
 import { CoursePaginationButton } from "@/features/pagination/PaginationButton";
 import { Menu } from "lucide-react";
 
@@ -8,10 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -157,6 +154,9 @@ export default async function CoursePage({
             <CardAction>{course.title}</CardAction>
           </CardHeader>
           <CardContent>
+            <div className="mb-4">
+              <Badge>{course.state}</Badge>
+            </div>
             <p>{course._count.users} Users</p>
             <p>{course._count.lessons} Lessons</p>
             <div className="flex flex-col gap-2 mt-4">
