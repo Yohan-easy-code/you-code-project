@@ -520,10 +520,10 @@ export default function Page() {
         <Separator />
       </section>
 
-      <section className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 pb-16 lg:px-6">
+      <section className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 pb-16 lg:px-6">
         <motion.div {...revealProps}>
           <Card className="border-border/70 bg-card shadow-sm">
-            <CardContent className="flex flex-col gap-6 p-8 lg:flex-row lg:items-center lg:justify-between">
+            <CardContent className="flex flex-col gap-8 p-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl space-y-3">
                 <Badge variant="outline">Projet</Badge>
                 <h2 className="text-3xl font-semibold tracking-tight">
