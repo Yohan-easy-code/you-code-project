@@ -103,16 +103,71 @@ Les outils utiles pour l'expérience, l'état local et le suivi.
 
 Pour le détail, veuillez regarder la page projet.
 
-## Getting Started
+## Lancer le projet en local
 
-First, run the development server:
+### Prérequis
+
+- Node.js 20 ou plus récent
+- npm
+- Une base PostgreSQL accessible en local ou à distance
+- Une application GitHub OAuth pour la connexion avec Next Auth
+
+### 1. Installer les dépendances
+
+```bash
+npm install
+```
+
+### 2. Configurer les variables d'environnement
+
+Copier le fichier d'exemple puis renseigner les valeurs nécessaires :
+
+```bash
+cp .env.example .env.local
+```
+
+Variables attendues par le projet :
+
+- `DATABASE_URL` : URL de connexion PostgreSQL.
+- `AUTH_SECRET` : secret utilisé par Auth.js.
+- `AUTH_URL` : URL locale de l'application, par exemple `http://localhost:3000`.
+- `AUTH_GITHUB_ID` : client id de l'application GitHub OAuth.
+- `AUTH_GITHUB_SECRET` : secret de l'application GitHub OAuth.
+- `NEXT_PUBLIC_PUBLISHABLE_KEY` : clé publique exposée côté client.
+- `OPEN_AI_API_KEY` : clé OpenAI utilisée par les intégrations serveur du projet.
+
+### 3. Préparer la base de données
+
+Le projet utilise Prisma 7 avec PostgreSQL. Après avoir renseigné `DATABASE_URL`, appliquer les migrations :
+
+```bash
+npx prisma migrate dev
+```
+
+Optionnellement, remplir la base avec les données de test :
+
+```bash
+npx prisma db seed
+```
+
+### 4. Lancer le serveur de développement
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+
+Ouvrir ensuite [http://localhost:3000](http://localhost:3000).
+
+### Commandes utiles
+
+```bash
+npm run lint
+npm run test
+npm run build
+npm run start
+```
+
+- `npm run lint` vérifie le code avec ESLint.
+- `npm run test` lance les tests Vitest.
+- `npm run build` compile l'application Next.js.
+- `npm run start` lance la version de production après un build.
